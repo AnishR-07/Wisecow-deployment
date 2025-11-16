@@ -49,7 +49,7 @@ jobs:
         cluster_name: wisecow
 
     - name: Apply Namespace
-      run: kubectl apply -f Wisecow-deployment/namespace.yml
+      run: kubectl apply -f k8s/namespace.yml
 
     - name: Apply Deployment
       run: kubectl apply -f k8s/deployment.yaml
