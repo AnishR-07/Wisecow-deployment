@@ -28,7 +28,7 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: anishe0007/wisecow:latest
+        tags: anishr0007/wisecow1
 
 
   deploy:
