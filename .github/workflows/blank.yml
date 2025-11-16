@@ -49,9 +49,7 @@ jobs:
         cluster_name: wisecow
 
     - name: Apply Namespace
-      run: cd k8s
-      run: git clone https://github.com/AnishR-07/Wisecow-deployment.git
-      run: kubectl apply -f https://github.com/AnishR-07/Wisecow-deployment/blob/main/namespace.yml
+      run: kubectl apply -f Wisecow-deployment/namespace.yml
 
     - name: Apply Deployment
       run: kubectl apply -f k8s/deployment.yaml
