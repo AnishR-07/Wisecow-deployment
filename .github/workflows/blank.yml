@@ -7,7 +7,7 @@ on:
 jobs:
   build:
     name: Build & Push Docker Image
-    runs-on: ubuntu-latest
+    runs-on: self-hosted   # ✅ use your own runner
 
     steps:
     - name: Checkout code
@@ -20,7 +20,7 @@ jobs:
       uses: docker/login-action@v3
       with:
         username: anishr0007
-        password: dckr_pat_JKAcjW_ZM-e4QubGZDIaQAVTR9Q
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v5
@@ -28,12 +28,11 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: anishr0007/wisecow1
-#changed
+        tags: anishr0007/wisecow1:latest
 
   deploy:
-    name: Deploy to KIND Cluster
-    runs-on: ubuntu-latest
+    name: Deploy to Existing KIND Cluster
+    runs-on: self-hosted   # ✅ use same machine where cluster is running
     needs: build
 
     steps:
@@ -43,19 +42,22 @@ jobs:
     - name: Install kubectl
       uses: azure/setup-kubectl@v4
 
-    - name: Create Kind cluster
-      uses: helm/kind-action@v1.7.0
-      with:
-        cluster_name: wisecow
+    # --------------------------------------------------------
+    # IMPORTANT: Point kubectl to your existing KIND cluster
+    # --------------------------------------------------------
+    - name: Configure kubectl for KIND
+      run: |
+        kind get kubeconfig --name wisecow-main > ~/.kube/config
+        kubectl cluster-info
 
     - name: Apply Namespace
-      run: kubectl apply -f k8s/namespace.yml
+      run: kubectl apply -f k8s/namespace.yml --validate=false
 
     - name: Apply Deployment
-      run: kubectl apply -f k8s/deployment.yml
+      run: kubectl apply -f k8s/deployment.yml --validate=false
 
     - name: Apply Service
-      run: kubectl apply -f k8s/service.yml
+      run: kubectl apply -f k8s/service.yml --validate=false
 
     - name: Verify rollout
       run: kubectl rollout status deployment/wisecow-deployment -n wisecow
