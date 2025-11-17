@@ -72,3 +72,6 @@ jobs:
 
     - name: Verify rollout
       run: kubectl rollout status deployment/wisecow-deployment -n wisecow
+
+    - name: portfrd
+      run: kubectl port-forward service/wisecow -n wisecow 30080:4499 --address=0.0.0.0
