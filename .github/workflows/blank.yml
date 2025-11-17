@@ -47,9 +47,13 @@ jobs:
     # --------------------------------------------------------
     - name: Configure kubectl for KIND
       run: |
+        # Ensure the .kube directory exists
+        mkdir -p ~/.kube
+        # Get kubeconfig for KIND cluster
         kind get kubeconfig --name wisecow-main > ~/.kube/config
+        # Verify the cluster info
         kubectl cluster-info
-
+        
     - name: Apply Namespace
       run: kubectl apply -f k8s/namespace.yml --validate=false
 
