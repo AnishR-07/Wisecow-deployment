@@ -46,11 +46,19 @@ jobs:
     # IMPORTANT: Point kubectl to your existing KIND cluster
     # --------------------------------------------------------
     - name: Configure kubectl for KIND
-      run: |
+    
+       run: |
+        # Debugging: Check permissions and path
+        echo "Home directory: $HOME"
+        echo "Current user: $(whoami)"
+        ls -ld ~/.kube
+        
         # Ensure the .kube directory exists
-        mkdir -p ~/.kube
+        mkdir -p /home/actions/.kube
+        
         # Get kubeconfig for KIND cluster
-        kind get kubeconfig --name wisecow-main > ~/.kube/config
+        kind get kubeconfig --name wisecow-main > /home/actions/.kube/config
+        
         # Verify the cluster info
         kubectl cluster-info
         
