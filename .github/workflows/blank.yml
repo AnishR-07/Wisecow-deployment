@@ -7,8 +7,8 @@ on:
 jobs:
   build:
     name: Build & Push Docker Image
-    runs-on: self-hosted  # ✅ use your own runne
-
+    runs-on: self-hosted 
+    
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -32,7 +32,7 @@ jobs:
 
   deploy:
     name: Deploy to Existing KIND Cluster
-    runs-on: self-hosted   # ✅ use same machine where cluster is running
+    runs-on: self-hosted   
     needs: build
 
     steps:
@@ -42,23 +42,13 @@ jobs:
     - name: Install kubectl
       uses: azure/setup-kubectl@v4
 
-    # --------------------------------------------------------
-    # IMPORTANT: Point kubectl to your existing KIND cluster
-    # --------------------------------------------------------
     - name: Configure kubectl for KIND
       run: |
-        # Debugging: Check permissions and path
-        echo "Home directory: $HOME"
-        echo "Current user: $(whoami)"
         ls -ld ~/.kube
-        
-        # Ensure the .kube directory exists
         mkdir -p /home/actions/.kube
         
-        # Get kubeconfig for KIND cluster
         kind get kubeconfig --name wisecow-main > /home/actions/.kube/config
         
-        # Verify the cluster info
         kubectl cluster-info
 
     - name: Apply Namespace
@@ -75,3 +65,6 @@ jobs:
 
     - name: portfrd
       run: kubectl port-forward service/wisecow -n wisecow 30080:4499 --address=0.0.0.0
+      
+
+      
