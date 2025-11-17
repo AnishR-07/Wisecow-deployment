@@ -7,7 +7,7 @@ on:
 jobs:
   build:
     name: Build & Push Docker Image
-    runs-on: self-hosted   # ✅ use your own runner
+    runs-on: ubuntu-latest   # ✅ use your own runner
 
     steps:
     - name: Checkout code
