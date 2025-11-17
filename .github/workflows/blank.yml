@@ -28,25 +28,28 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: anishr0007/wisecow1
-#changed
+        tags: anishr0007/wisecow1:latest
+
 
   deploy:
     name: Deploy to KIND Cluster
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: build
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Install kubectl
-      uses: azure/setup-kubectl@v4
+    - name: Ensure kubectl is installed
+      run: |
+        if ! command -v kubectl &> /dev/null
+        then
+          sudo snap install kubectl --classic || sudo apt-get install -y kubectl
+        fi
 
-    - name: Create Kind cluster
-      uses: helm/kind-action@v1.7.0
-      with:
-        cluster_name: wisecow
+    - name: Load Docker image into KIND cluster
+      run: |
+        kind load docker-image anishr0007/wisecow1:latest --name wisecow-main
 
     - name: Apply Namespace
       run: kubectl apply -f k8s/namespace.yml
