@@ -1,0 +1,9 @@
+2025-11-18 21:13:54 - Backup process started.
+2025-11-18 21:13:54 - Backup creation failed: [Errno 2] No such file or directory: '/root/projects/'
+2025-11-18 21:13:54 - Backup FAILED during archive creation.
+2025-11-18 21:14:48 - Backup process started.
+2025-11-18 21:14:48 - Backup archive created successfully.
+2025-11-18 21:14:48 - Backup completed SUCCESSFULLY.
+2025-11-18 21:37:38 - Backup process started.
+2025-11-18 21:37:38 - Backup archive created successfully.
+2025-11-18 21:37:38 - Backup completed SUCCESSFULLY.
