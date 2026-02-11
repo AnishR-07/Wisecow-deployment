@@ -20,7 +20,7 @@ jobs:
       uses: docker/login-action@v3
       with:
         username: anishr0007
-        password: Anish@8520
+        password: Anish@8920
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v5
